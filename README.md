@@ -28,7 +28,20 @@ No se requiere ningún otro servicio externo (no usa Redis, colas, ni servicios 
    php artisan key:generate
    ```
 
-4. Crear una base de datos vacía en MySQL (el nombre debe coincidir con `DB_DATABASE` del paso 5):
+4. Crear una base de datos vacía en MySQL (el nombre debe coincidir con `DB_DATABASE` del paso 5).
+
+   ⚠️ **Este paso se ejecuta dentro de un cliente de MySQL, no en la terminal del sistema operativo.** Pegar la sentencia SQL directamente en PowerShell, CMD o bash sin abrir antes un cliente de MySQL da un error de "comando no reconocido".
+
+   Opción rápida (una sola línea, ajustar usuario/contraseña según tu instalación):
+   ```bash
+   mysql -u root -e "CREATE DATABASE prueba_netberry CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   ```
+
+   O entrando primero al cliente interactivo:
+   ```bash
+   mysql -u root
+   ```
+   y una vez dentro (verás el prompt `mysql>`):
    ```sql
    CREATE DATABASE prueba_netberry CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
