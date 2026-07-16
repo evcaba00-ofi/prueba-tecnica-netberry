@@ -53,8 +53,11 @@ class TareaController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
-            'categorias' => ['required', 'array', 'min:1'],
+            'categorias' => ['nullable', 'array'],
             'categorias.*' => ['integer', 'exists:categorias,id'],
+        ], [
+            'nombre.required' => 'El nombre de la tarea es obligatorio.',
+            'categorias.*.exists' => 'Una de las categorías seleccionadas no es válida.',
         ]);
 
         $normalizado = mb_strtolower(trim($validated['nombre']));
@@ -82,7 +85,7 @@ class TareaController extends Controller
             throw $e;
         }
 
-        $tarea->categorias()->attach($validated['categorias']);
+        $tarea->categorias()->attach($validated['categorias'] ?? []);
 
         return response()->json($tarea->load('categorias'), 201);
     }
