@@ -46,11 +46,16 @@ No se requiere ningún otro servicio externo (no usa Redis, colas, ni servicios 
    CREATE DATABASE prueba_netberry CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
 
-   **En Windows (Laragon, XAMPP, WAMP):** si la terminal responde "mysql no se reconoce como comando", el ejecutable no está agregado al PATH del sistema. Usar la ruta completa al binario en su lugar, por ejemplo:
+   **En Windows (Laragon, XAMPP, WAMP):** si la terminal responde "mysql no se reconoce como comando", el ejecutable no está agregado al PATH del sistema. Hay que usar la ruta completa al binario en su lugar.
+
+   Para encontrar esa ruta en Laragon, en PowerShell:
    ```powershell
-   & "C:\laragon\bin\mysql\mysql-8.x.x-winx64\bin\mysql.exe" -u root -e "CREATE DATABASE prueba_netberry CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   Get-ChildItem -Path "C:\laragon\bin\mysql" -Recurse -Filter "mysql.exe" | Select-Object -ExpandProperty FullName
    ```
-   (la ruta exacta depende de la versión de MySQL instalada — buscar la carpeta `mysql` dentro de la instalación de Laragon/XAMPP).
+   Esto devuelve la ruta exacta según la versión instalada (por ejemplo `C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin\mysql.exe`). Usar esa ruta completa entre comillas, precedida por `&`, en vez de escribir `mysql` solo:
+   ```powershell
+   & "<ruta-encontrada-arriba>" -u root -e "CREATE DATABASE prueba_netberry CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   ```
 
 5. Editar el archivo `.env` con los datos de conexión a esa base de datos:
    ```
